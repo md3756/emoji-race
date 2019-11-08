@@ -7,7 +7,7 @@ import { firestore } from './firebase'
 
 // Import components
 import MyList from './MyListComponent'
-// import Auth from './Auth';
+import Auth from './Auth';
 
 firestore.collection('items').onSnapshot((snapshot) => {
   const items = []
@@ -35,7 +35,7 @@ export default function App() {
   return (
     <store.Provider>
       <View style={styles.container}>
-        <MyList />
+        <AuthGate />
       </View>
     </store.Provider>
   )

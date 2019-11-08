@@ -3,7 +3,7 @@ import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'rea
 import * as Facebook from 'expo-facebook';
 
 import store from './store'
-import { auth } from './firebase'
+import { auth, firebase } from './firebase'
 
 async function logIn() {
     try {
@@ -18,18 +18,43 @@ async function logIn() {
       });
       switch (type) {
         case 'success': {
-          console.log('SUCCESS');
-          // await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
-          const credential = auth.FacebookAuthProvider.credential(token);
-          await auth().signInAndRetrieveDataWithCredential(credential) // Sign in with Facebook credential
-    
+          console.log('FB SUCCESS');
+          await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);  // Sign in with Facebook credential
+
+          // await auth.setPersistence(auth.Auth.Persistence.LOCAL);  // Set persistent auth state
+          // const credential = auth.FacebookAuthProvider.credential(token);
+          // await auth.signInAndRetrieveDataWithCredential(credential) // Sign in with Facebook credential
+
+          // auth.getRedirectResult().then(function(result) {
+          //   if (result.credential) {
+          //     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+          //     var t = token;
+          //     console.log("Firebase token " + t)
+          //     // ...
+          //   }
+          //   // The signed-in user info.
+          //   var user = result.user;
+          // }).catch(function(error) {
+          //   console.log("Firebase Nope")
+          //   // Handle Errors here.
+          //   var errorCode = error.code;
+          //   var errorMessage = error.message;
+          //   // The email of the user's account used.
+          //   var email = error.email;
+          //   // The firebase.auth.AuthCredential type that was used.
+          //   var credential = error.credential;
+          //   // ...
+          // });
           // Do something with Facebook profile data
           // OR you have subscribed to auth state change, authStateChange handler will process the profile data
-          
+          console.log("FB TOKEN   " + token)
+
           return Promise.resolve({type: 'success'});
         }
         case 'cancel': {
-          console.log('YA CANCELED')
+          console.log('FB YA CANCELED')
           return Promise.reject({type: 'cancel'});
         }
       }
@@ -39,15 +64,17 @@ async function logIn() {
 }
   
 
-  const Auth = (props) => {
+class Auth extends React.Component {
+  render() {
     return (
-      <Button
-      onPress={() => {this.logIn}}
-      title="Login with Facebook"
-      />
-
+    <Button
+    onPress={() => {logIn()}}
+    title="Login with Facebook"
+    />
     )
+
   }
+}
 
 // class Auth extends React.Component {
 //     constructor(props) {

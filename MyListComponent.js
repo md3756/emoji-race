@@ -58,6 +58,10 @@ class MyListComponent extends React.Component {
      
     }
 
+    logout() {
+      this.props.store.dispatch("LOGOUT")
+    }
+
     render() {
         const items = []
 
@@ -85,6 +89,10 @@ class MyListComponent extends React.Component {
 
       return (
         <View>
+          <Button
+            title="SIGN OUT"
+            onPress={() => this.logout()}
+          />
           <Text style={{marginBottom: 5, fontSize: 22, textAlign: "center"}}>
             EMOJI RACE 
           </Text>

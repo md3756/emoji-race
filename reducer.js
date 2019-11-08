@@ -22,6 +22,12 @@ export default function reducer(state, action) {
                 ...state,
                 user: action.props
             }
+        
+        case "LOGOUT":
+            return {
+                ...state,
+                user: null
+            }
 
         case 'ADD_ITEMS':
             var items = state.items
