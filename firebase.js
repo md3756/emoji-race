@@ -26,6 +26,9 @@ export { auth as auth }
 auth.onAuthStateChanged((user) => {
     // fluxStore.dispatch('AUTH', user)
     console.log('HERE');
+    if(user) {
+      console.log('USER', user)
+    }
     // console.log('USER', user)
     // auth.signOut()
 //     if (user) {
