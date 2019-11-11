@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "emoji race",
-    "slug": "emoji-race",
+    "name": "emoji race w/ auth",
+    "slug": "emoji-race-auth",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [

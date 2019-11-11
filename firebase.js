@@ -36,12 +36,14 @@ auth.onAuthStateChanged((user) => {
       // User is signed in.
       var displayName = user.displayName;
       console.log("HELLO " + displayName)
-      
+
       
       // ...
-    } else {
+    } else { //user is null
       // User is signed out.
-      // ...
+      fluxStore.dispatch('LOGOUT')
+      console.log('SIGNED OUT\n\n', user);
+      auth.signOut();
+      console.log('WE GONEZO\n');
     }
-    //auth.signOut()
   })

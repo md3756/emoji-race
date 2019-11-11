@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { firebase } from './firebase';
 
 import store from './store'
 
@@ -58,8 +59,14 @@ class MyListComponent extends React.Component {
      
     }
 
-    logout() {
-      this.props.store.dispatch("LOGOUT")
+    logout = async () => {
+      try {
+          await this.props.store.dispatch("LOGOUT");
+          await firebase.auth().signOut();
+          console.log('SIGNING OUT\n\n')
+      } catch(err) {
+        console.log('ERROR IN LOGGING OUT\n\n', err);
+      }
     }
 
     render() {
@@ -92,6 +99,7 @@ class MyListComponent extends React.Component {
           <Button
             title="SIGN OUT"
             onPress={() => this.logout()}
+            style={{justifyContent: "flex-end"}}
           />
           <Text style={{marginBottom: 5, fontSize: 22, textAlign: "center"}}>
             EMOJI RACE 
