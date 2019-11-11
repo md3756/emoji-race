@@ -95,12 +95,15 @@ class MyListComponent extends React.Component {
         )
 
       return (
-        <View>
-          <Button
-            title="SIGN OUT"
-            onPress={() => this.logout()}
-            style={{justifyContent: "flex-end"}}
-          />
+        <View >
+            <TouchableOpacity 
+              style={{ height: 100, alignSelf: 'flex-end' }}
+              onPress={() => this.logout()}
+              >
+              <Text>Sign Out</Text>
+          </TouchableOpacity>
+
+          
           <Text style={{marginBottom: 5, fontSize: 22, textAlign: "center"}}>
             EMOJI RACE 
           </Text>
