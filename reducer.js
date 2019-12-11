@@ -42,8 +42,20 @@ export default function reducer(state, action) {
                     ...state,
                     items: action.props
                 }
-        
+        case 'SET_GROUPS':
+                var groups = state.groups
+                return {
+                    ...state,
+                    groups: action.props
+                }
+        case "SET_GROUP": 
+                var group_ = state.group_
+                return {
+                    ...state,
+                    group_: action.props
+                }
         case 'ADD_ITEM':
+            // console.log(state)
             var items = state.items
 
             // add item locally
@@ -56,7 +68,8 @@ export default function reducer(state, action) {
                 ...state,
                 items
             }
-        
+        case "ADD_IMG":
+            var img = action.props
         case 'DELETE_ITEM':
             // delete item from local store
             var items = state.items.filter(item => item.id != action.props.id)
@@ -100,6 +113,32 @@ export default function reducer(state, action) {
                 winner: win
             }
         
+        case "NEW_GROUP":
+            // console.log(state)
+                var groups = state.groups
+
+                // add item locally
+                groups.push(action.props)
+    
+                // add item remotely
+                firestore.collection('groups').add(action.props)
+    
+                return {
+                    ...state,
+                    groups
+                }
+        case "ADD_IMAGE":
+            console.log(action.props);
+            console.log(state.img)
+            var img = state.img
+            img = action.img;
+            // console.log(img);
+            return {
+                ...state,
+                img: action.props
+            }
+
+            
         default:
             newState = state
             break;

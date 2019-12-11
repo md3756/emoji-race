@@ -1,11 +1,14 @@
 import React from 'react'
-import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View, ImageBackground} from 'react-native';
+import {Card} from 'react-native-paper'
 import * as Facebook from 'expo-facebook';
 
 import store from './store'
 import { auth, firebase } from './firebase'
 
 async function logIn() {
+    const appId =Expo.Constants.manifest.extra.facebook.appId;
+    console.log("HELLO")
     try {
       const {
         type,
@@ -13,7 +16,7 @@ async function logIn() {
         expires,
         permissions,
         declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync('2448109548635277', {
+      } = await Facebook.logInWithReadPermissionsAsync(appId, {
         permissions: ['public_profile'],
       });
       switch (type) {
@@ -22,33 +25,6 @@ async function logIn() {
           await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
       await firebase.auth().signInAndRetrieveDataWithCredential(credential);  // Sign in with Facebook credential
-
-          // await auth.setPersistence(auth.Auth.Persistence.LOCAL);  // Set persistent auth state
-          // const credential = auth.FacebookAuthProvider.credential(token);
-          // await auth.signInAndRetrieveDataWithCredential(credential) // Sign in with Facebook credential
-
-          // auth.getRedirectResult().then(function(result) {
-          //   if (result.credential) {
-          //     // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          //     var t = token;
-          //     console.log("Firebase token " + t)
-          //     // ...
-          //   }
-          //   // The signed-in user info.
-          //   var user = result.user;
-          // }).catch(function(error) {
-          //   console.log("Firebase Nope")
-          //   // Handle Errors here.
-          //   var errorCode = error.code;
-          //   var errorMessage = error.message;
-          //   // The email of the user's account used.
-          //   var email = error.email;
-          //   // The firebase.auth.AuthCredential type that was used.
-          //   var credential = error.credential;
-          //   // ...
-          // });
-          // Do something with Facebook profile data
-          // OR you have subscribed to auth state change, authStateChange handler will process the profile data
           console.log("FB TOKEN   " + token)
 
           return Promise.resolve({type: 'success'});
@@ -67,66 +43,25 @@ async function logIn() {
 class Auth extends React.Component {
   render() {
     return (
-    <Button
-    onPress={() => {logIn()}}
-    title="Login with Facebook"
+      <ImageBackground
+      source={require("./assets/didit.png")}
+        style={{width: '100%',
+        height: '100%',
+        justifyContent: 'center'}}
+        >
+        
+      <Card style= {{borderRadius: 10, margin: 35, justifyContent: "center"}}>
+        <Button
+      onPress={() => {logIn()}}
+      title="Login with Facebook"
     />
+      </Card>
+      </ImageBackground>
+    
     )
 
   }
 }
-
-// class Auth extends React.Component {
-//     constructor(props) {
-//       super(props)
-
-//       this.state = {
-//         email: '',
-//         password: '',
-//         newUser: false,
-//         user: ''
-//       }
-//     }
-
-//     onChangeEmail(text) {
-//       this.setState({email: text})
-//     }
-
-//     onChangePassword(text) {
-//       this.setState({password: text})
-//     }
-
-//     toggleNewUser() {
-//       this.setState({newUser: !this.state.newUser})
-//     }
-
-//     onClick() {
-//       if(this.state.newUser)
-//         auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
-//       else
-//         auth.signInWithEmailAndPassword(this.state.email, this.state.password)
-//     }
-
-//     onChangeName(name) {
-//         this.setState({user: name})
-//     }
-
-//     render() {
-//       return (
-//         <View>
-//           <Text style={{fontSize:20}}>Log in please</Text>
-//           {this.state.newUser && <TextInput placeholder="name" style={{backgroundColor: 'white', width: 250, padding: 5, fontSize: 24, margin: 10}} value={this.state.name} onChangeText={text => this.onChangeName(text)}/>}        
-//           <TextInput placeholder="email" style={{backgroundColor: 'white', width: 250, padding: 5, fontSize: 24, margin: 10}} value={this.state.email} onChangeText={text => this.onChangeEmail(text)}/>
-//           <TextInput secureTextEntry={true} placeholder="password" style={{backgroundColor: 'white', width: 250, padding: 5, fontSize: 24, margin: 10}} value={this.state.password} onChangeText={text => this.onChangePassword(text)}/>
-        
-//           <Button disabled={!this.state.email && !this.state.password} title={this.state.newUser ? 'Sign Up' : "Log In"} onPress={() => this.onClick()}/>
-        
-//           <TouchableOpacity onPress={() => this.toggleNewUser()} style={{marginTop: 25}}><Text>or {!this.state.newUser ? 'Sign Up' : 'Log In'}</Text></TouchableOpacity>
-//         </View>
-//       )
-//     }
-//   }
-  
 // Connect Component to the store
 Auth = store.connect(Auth)
 

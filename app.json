@@ -24,8 +24,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mithila.emoji"
     },
-    "description": ""
+    "android": {
+      "package": "com.mithila.emoji"
+    },
+    "description": "", 
+    "extra": {
+      "facebook": {
+        "appId": "680741029118920"
+      }
+    }
   }
 }

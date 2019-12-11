@@ -4,7 +4,10 @@ import reducer from './reducer'
 // Define initial store state
 const initialState = {
     user: null, 
-    items: []
+    items: [], 
+    groups: [], 
+    group_: '', 
+    img: ''
 }
 
 

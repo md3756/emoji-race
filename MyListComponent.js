@@ -1,6 +1,8 @@
 import React from 'react'
-import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {Text, TouchableOpacity, View, Button} from 'react-native'
 import { firebase } from './firebase';
+import {Card, TextInput } from 'react-native-paper'
+
 
 import store from './store'
 
@@ -25,13 +27,14 @@ class MyListComponent extends React.Component {
     }
 
     onClick() {
-      this.setState({name: '', emoji: ''})
-      
+      this.setState({name: '', emoji: ''})      
       this.props.store.dispatch('ADD_ITEM', {
         name: this.state.name,
         emoji: this.state.emoji,
         pos: Number(0), 
-        across: Number(0)
+        across: Number(0), 
+        group_: this.props.navigation.state.params.group_, 
+        user: firebase.auth().currentUser.providerData[0]["uid"]
       })
     }
 
@@ -71,10 +74,12 @@ class MyListComponent extends React.Component {
 
     render() {
         const items = []
+        const { navigation } = this.props;
+        console.log(navigation.getParam("group_"))
 
         this.props.store.state.items.forEach((item, i) => 
-          items.push((
-            <View key={i} style={{borderBottomColor: "powderblue", borderBottomWidth: 5}}>
+          {if (navigation.getParam("group_") == item.group_) {  items.push((
+            <Card key={i} style={{borderBottomColor: "cornflowerblue", borderBottomWidth: 5,  margin: 5}}>
             <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
               <TouchableOpacity
                 onPress={() => this.onItemPress(item, i)}
@@ -90,19 +95,18 @@ class MyListComponent extends React.Component {
               <Text style={{left: `${item.pos}%`, fontSize: 24}}>
                 {item.emoji}
               </Text>
-            </View>
-        ))
+            </Card>
+        )) }}
         )
-
       return (
         <View >
             <TouchableOpacity 
-              style={{ height: 100, alignSelf: 'flex-end' }}
+              style={{ height: 20, alignSelf: 'flex-end' }}
               onPress={() => this.logout()}
               >
               <Text>Sign Out</Text>
           </TouchableOpacity>
-
+          <Text style={{marginBottom: 5, fontSize: 22, textAlign: "center"}} >GROUP: {JSON.stringify(navigation.getParam('group_', 'null'))}</Text>
           
           <Text style={{marginBottom: 5, fontSize: 22, textAlign: "center"}}>
             EMOJI RACE 
@@ -125,7 +129,7 @@ class MyListComponent extends React.Component {
             <Button 
             disabled={(!this.state.name) || (!this.state.emoji)} 
             title="Enter Race" onPress={() => this.onClick()}
-            style={{flex: 1}}
+            style={{flex: .5}}
             />
           </View>
           {items}
